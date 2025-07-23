@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <!-- Favicons -->
+  <link href="fav-ico.png" rel="icon">
+  <link href="fav-ico.png" rel="apple-touch-icon">
+
+  <title>Mathematics Game | Let's Play</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff8dc;
+      color: #333;
+      margin: 0;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      align-items: flex-start;
+    }
+    .container {
+      max-width: 400px;
+      width: 100%;
+      background: #fffdf2;
+      padding: 1.5rem 2rem 2rem;
+      border-radius: 20px;
+      box-shadow: 0 6px 15px rgba(251, 191, 36, 0.3);
+      user-select: none;
+    }
+    .header h1 {
+      text-align: center;
+      font-weight: 700;
+      font-size: 2rem;
+      color: #b45309;
+      margin-bottom: 6px;
+      user-select: none;
+    }
+    .player-name {
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      color: #b45309;
+      user-select: text;
+    }
+
+    .mode-info {
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 14px;
+      color: #92400e;
+      user-select: none;
+    }
+
+    .progress-container {
+      background: #fde68a;
+      border-radius: 10px;
+      height: 14px;
+      width: 100%;
+      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .progress-bar {
+      height: 100%;
+      background: #b45309;
+      width: 0;
+      transition: width 0.4s ease;
+      border-radius: 10px;
+    }
+
+    .timer-container {
+      width: 80px;
+      margin: 0 auto 20px;
+    }
+    .circular-chart {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .circle-bg {
+      fill: none;
+      stroke: #fcd34d;
+      stroke-width: 3.8;
+    }
+    .circle {
+      fill: none;
+      stroke: #b45309;
+      stroke-width: 3.8;
+      stroke-linecap: round;
+      transition: stroke-dasharray 0.3s ease;
+    }
+    .percentage {
+      fill: #b45309;
+      font-size: 0.9em;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      font-weight: 700;
+      user-select: none;
+    }
+
+    .question-box {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .level-score {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #92400e;
+      margin-bottom: 10px;
+      user-select: none;
+    }
+    #question {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #b45309;
+      margin-bottom: 12px;
+      user-select: none;
+    }
+    #answer {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #16a34a;
+      user-select: text;
+      min-height: 32px;
+      margin-bottom: 6px;
+      letter-spacing: 2px;
+    }
+    #explanation {
+      font-size: 0.9rem;
+      font-style: italic;
+      color: #b45309;
+      min-height: 18px;
+      user-select: none;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    #back-btn {
+      background: #fbbf24;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      color: white;
+      box-shadow: 0 5px 15px rgba(251, 191, 36, 0.7);
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    #back-btn:hover {
+      background: #d97706;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 280px;
+      margin: 0 auto 30px;
+    }
+    .keypad button {
+      padding: 18px 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+      border-radius: 12px;
+      border: none;
+      background: #fbbf24;
+      color: white;
+      box-shadow: 0 5px 12px rgba(251, 191, 36, 0.7);
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    .keypad button:hover {
+      background: #d97706;
+    }
+
+    /* Best score & leaderboard */
+    [style*="text-align:center"] {
+      color: #92400e;
+      font-weight: 700;
+      user-select: none;
+    }
+    #best-score {
+      font-size: 1.3rem;
+      margin-left: 6px;
+      color: #16a34a;
+    }
+
+    #leaderboard-list {
+      max-width: 300px;
+      margin: 15px auto 0 auto;
+      padding-left: 20px;
+      text-align: left;
+      color: #333;
+      font-weight: 600;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      user-select: none;
+    }
+    #leaderboard-list li {
+      margin-bottom: 6px;
+      background: #fff6db;
+      padding: 8px 12px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      color: #b45309;
+    }
+    #leaderboard-list li span.score {
+      color: #16a34a;
+    }
+
+    /* Responsive */
+    @media (max-width: 400px) {
+      .container {
+        padding: 1rem 1rem 1.5rem;
+      }
+      .keypad {
+        max-width: 100%;
+        gap: 8px;
+      }
+      .keypad button {
+        font-size: 1.1rem;
+        padding: 14px 0;
+      }
+      #question {
+        font-size: 1.5rem;
+      }
+      #answer {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-label="Game kalkulasi cepat">
+    <div class="header">
+      <h1>Game Matematika</h1>
+      <div class="player-name" id="playerNameDisplay" aria-live="polite" aria-atomic="true"></div>
+    </div>
+
+    <div class="mode-info" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="progress-container" aria-label="Progress soal">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <div class="timer-container" aria-label="Timer sisa waktu">
+      <svg viewBox="0 0 36 36" class="circular-chart" aria-hidden="true" focusable="false">
+        <path class="circle-bg"
+              d="M18 2.0845
+                 a 15.9155 15.9155 0 0 1 0 31.831
+                 a 15.9155 15.9155 0 0 1 0 -31.831" />
+        <path id="circle"
+              class="circle"
+              stroke-dasharray="100, 100"
+              d="M18 2.0845
+                 a 15.9155 15.9155 0 0 1 0 31.831
+                 a 15.9155 15.9155 0 0 1 0 -31.831" />
+        <text x="18" y="20.35" class="percentage" id="time-text" aria-live="assertive">10</text>
+      </svg>
+    </div>
+
+    <div class="question-box" aria-live="polite">
+      <div class="level-score">
+        <span id="level">Question 1</span>
+        <span id="score">🏆 0</span>
+      </div>
+      <div id="question">1 + 1 =</div>
+      <div id="answer" aria-label="Jawaban saat ini">?</div>
+      <div id="explanation"></div>
+    </div>
+
+    <div class="button-row" aria-label="Tombol aksi utama">
+      <button id="back-btn" type="button">Back</button>
+    </div>
+
+    <div class="keypad" id="keypad" role="group" aria-label="Papan tombol angka">
+      <!-- tombol angka di-generate JS -->
+    </div>
+
+    <div style="text-align:center; margin-top:10px; font-size:14px; color:#666;">
+      Best Score: <span id="best-score">0</span>
+    </div>
+
+    <div style="text-align:center; margin-top:15px; font-size:14px; color:#666;">
+      <strong>Leaderboard (5 Best Scores):</strong>
+      <ol id="leaderboard-list"></ol>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

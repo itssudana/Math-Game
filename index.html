@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Favicons -->
+  <link href="fav-ico.png" rel="icon" />
+  <link href="fav-ico.png" rel="apple-touch-icon" />
+
+  <title>Mathematics Game | Main Menu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset & box sizing */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Comfortaa', cursive, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #fef3c7, #fbbf24);
+      color: #374151;
+      min-height: 100vh;
+      padding-top: 60px; /* space for navbar */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* Navbar */
+    nav.navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #f59e0b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      z-index: 1000;
+      padding: 0 16px;
+    }
+
+    nav.navbar h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: white;
+      user-select: none;
+      flex-grow: 1;
+      text-align: center;
+      margin: 0;
+      pointer-events: none; /* supaya klik di title tidak ganggu */
+    }
+
+    /* Tombol info "i" di navbar kanan */
+    #infoBtn {
+      background: white;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      border: none;
+      font-weight: bold;
+      font-size: 1.4rem;
+      color: #f59e0b;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    #infoBtn:hover,
+    #infoBtn:focus {
+      background: #d97706;
+      color: white;
+      outline: none;
+    }
+
+    p.subtitle {
+      font-size: 1.2rem;
+      margin: 1rem 0 1.5rem 0;
+      color: #92400e;
+      font-weight: 600;
+      max-width: 500px;
+    }
+
+    input#playerName {
+      width: 280px;
+      max-width: 90vw;
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: 2px solid #f59e0b;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #b45309;
+      text-align: center;
+      box-shadow: 0 3px 6px rgba(251,191,36,0.4);
+      transition: border-color 0.3s, box-shadow 0.3s;
+      user-select: text;
+    }
+    input#playerName:focus {
+      outline: none;
+      border-color: #d97706;
+      box-shadow: 0 4px 12px rgba(217,119,6,0.7);
+    }
+
+    .mode-buttons {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 320px;
+      width: 100%;
+    }
+
+    .mode-btn {
+      background: #f59e0b;
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: 14px 0;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(245,158,11,0.5);
+      cursor: pointer;
+      user-select: none;
+      border: none;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+    }
+    .mode-btn:hover {
+      background: #d97706;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(217,119,6,0.7);
+    }
+    .mode-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 5px 10px rgba(217,119,6,0.5);
+    }
+
+    .mode-btn.easy {
+      background: #10b981;
+      box-shadow: 0 5px 15px rgba(16,185,129,0.5);
+    }
+    .mode-btn.easy:hover {
+      background: #059669;
+      box-shadow: 0 10px 20px rgba(5,150,105,0.7);
+    }
+
+    .mode-btn.hard {
+      background: #ef4444;
+      box-shadow: 0 5px 15px rgba(239,68,68,0.5);
+    }
+    .mode-btn.hard:hover {
+      background: #b91c1c;
+      box-shadow: 0 10px 20px rgba(185,28,28,0.7);
+    }
+
+    .mode-btn.master {
+      background: #f59e0b;
+      box-shadow: 0 5px 15px rgba(245,158,11,0.5);
+    }
+    .mode-btn.master:hover {
+      background: #d97706;
+      box-shadow: 0 10px 20px rgba(217,119,6,0.7);
+    }
+
+    .mode-btn.practice {
+      background: #3b82f6;
+      box-shadow: 0 5px 15px rgba(59,130,246,0.5);
+    }
+    .mode-btn.practice:hover {
+      background: #2563eb;
+      box-shadow: 0 10px 20px rgba(37,99,235,0.7);
+    }
+
+    .leaderboard {
+      margin-top: 3rem;
+      max-width: 480px;
+      width: 100%;
+      background: #fef3c7dd;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(251,191,36,0.3);
+      padding: 1.5rem 2rem;
+      user-select: none;
+    }
+
+    .leaderboard h3 {
+      color: #92400e;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      border-bottom: 2px solid #fbbf24;
+      padding-bottom: 6px;
+      font-size: 1.3rem;
+    }
+
+    .leaderboard ul {
+      list-style: none;
+      padding-left: 0;
+      max-height: 160px;
+      overflow-y: auto;
+    }
+
+    .leaderboard li {
+      background: #fef3c7cc;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      border-radius: 12px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      box-shadow: inset 0 1px 2px rgba(255 255 255 / 0.7);
+      color: #92400e;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+    .leaderboard li:hover {
+      background-color: #fbbf24cc;
+      color: #7c2d12;
+      cursor: default;
+    }
+
+    #reset-leaderboard {
+      margin-top: 2rem;
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 16px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(239,68,68,0.5);
+      transition: background-color 0.3s, transform 0.2s ease;
+      user-select: none;
+    }
+    #reset-leaderboard:hover {
+      background: #b91c1c;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(185,28,28,0.7);
+    }
+    #reset-leaderboard:active {
+      transform: translateY(0);
+      box-shadow: 0 8px 20px rgba(185,28,28,0.5);
+    }
+
+    /* Scrollbar for leaderboard */
+    .leaderboard ul::-webkit-scrollbar {
+      width: 8px;
+    }
+    .leaderboard ul::-webkit-scrollbar-thumb {
+      background: #fbbf24cc;
+      border-radius: 4px;
+    }
+
+    /* Modal About */
+    #aboutModal {
+      display: none;
+      position: fixed;
+      z-index: 1001;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+    }
+
+    #aboutModal.active {
+      display: flex;
+    }
+
+    #aboutModal .modal-content {
+      background: white;
+      max-width: 400px;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      text-align: left;
+      color: #374151;
+      position: relative;
+    }
+
+    #aboutModal .modal-content h2 {
+      margin-bottom: 1rem;
+      color: #b45309;
+    }
+
+    #aboutModal .modal-content p {
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+      font-size: 1rem;
+    }
+
+    #aboutModal .modal-content a {
+      color: #f59e0b;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    #aboutModal .modal-content a:hover,
+    #aboutModal .modal-content a:focus {
+      text-decoration: underline;
+      outline: none;
+    }
+
+    #aboutModal .close-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #f59e0b;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 1.5rem;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      line-height: 30px;
+      text-align: center;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    #aboutModal .close-btn:hover,
+    #aboutModal .close-btn:focus {
+      background: #d97706;
+      outline: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 500px) {
+      nav.navbar h1 {
+        font-size: 1.4rem;
+      }
+      .mode-btn {
+        font-size: 1rem;
+        padding: 12px 0;
+      }
+      .leaderboard {
+        max-width: 100%;
+        padding: 1rem;
+      }
+      input#playerName {
+        width: 100%;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar" role="banner" aria-label="Primary Navigation">
+    <h1>Mathematics Game</h1>
+    <button id="infoBtn" aria-label="About" title="About">i</button>
+  </nav>
+
+  <p class="subtitle">Enter your name before playing :</p>
+  <input type="text" id="playerName" placeholder="Your Name..." autocomplete="off" />
+
+  <div class="mode-buttons" role="list" aria-label="Pilihan mode permainan">
+    <button class="mode-btn easy" type="button" onclick="startGame('easy')">Easy Mode (10 sec)</button>
+    <button class="mode-btn hard" type="button" onclick="startGame('hard')">Hard Mode (8 sec)</button>
+    <button class="mode-btn master" type="button" onclick="startGame('master')">Master Mode (15 sec)</button>
+    <button class="mode-btn practice" type="button" onclick="startGame('practice')">Practice Mode (Without Timer)</button>
+  </div>
+
+  <section class="leaderboard" aria-label="Leaderboard">
+    <h3>Leaderboard Easy Mode</h3>
+    <ul id="leaderboard-easy" tabindex="0" aria-live="polite"></ul>
+
+    <h3>Leaderboard Hard Mode</h3>
+    <ul id="leaderboard-hard" tabindex="0" aria-live="polite"></ul>
+
+    <h3>Leaderboard Master Mode</h3>
+    <ul id="leaderboard-master" tabindex="0" aria-live="polite"></ul>
+  </section>
+
+  <button id="reset-leaderboard" aria-label="Reset Semua Leaderboard">Reset All Leaderboard</button>
+
+  <!-- Modal About -->
+  <div id="aboutModal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle" aria-describedby="aboutDesc">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Close About Modal">&times;</button>
+      <h2 id="aboutTitle">About This Game</h2>
+      <p id="aboutDesc">
+        This Mathematics Game was created by <strong>Rainnatha Sudana</strong>.<br />
+        It is designed to improve your math skills in a fun and interactive way.
+      </p>
+      <p>
+        Visit my portfolio: <a href="https://itssudana.github.io/" target="_blank" rel="noopener noreferrer">itssudana.github.io</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Load nama pemain tersimpan jika ada
+    const savedName = localStorage.getItem('playerName');
+    if(savedName) {
+      document.getElementById('playerName').value = savedName;
+    }
+
+    function startGame(mode) {
+      const nameInput = document.getElementById('playerName');
+      const name = nameInput.value.trim();
+      if (!name) {
+        alert('Please enter your name first.');
+        nameInput.focus();
+        return;
+      }
+      localStorage.setItem('playerName', name);
+      window.location.href = `game.html?mode=${mode}`;
+    }
+
+    const leaderboardModes = ['easy', 'hard', 'master'];
+
+    function renderLeaderboard(mode) {
+      const data = JSON.parse(localStorage.getItem('leaderboard-' + mode) || '[]');
+      const list = document.getElementById('leaderboard-' + mode);
+      if (!list) return;
+      list.innerHTML = '';
+      if(data.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = "No score yet";
+        list.appendChild(li);
+        return;
+      }
+      data.slice(0, 5).forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} — ${item.score}`;
+        list.appendChild(li);
+      });
+    }
+
+    leaderboardModes.forEach(renderLeaderboard);
+
+    document.getElementById('reset-leaderboard').addEventListener('click', () => {
+      if (confirm('Are you sure you want to reset all leaderboards?')) {
+        leaderboardModes.forEach(mode => {
+          localStorage.removeItem('leaderboard-' + mode);
+          localStorage.removeItem('bestScore-' + mode);
+        });
+        alert('Leaderboard berhasil direset!');
+        leaderboardModes.forEach(renderLeaderboard);
+      }
+    });
+
+    // About modal open/close
+    const infoBtn = document.getElementById('infoBtn');
+    const aboutModal = document.getElementById('aboutModal');
+    const closeBtn = aboutModal.querySelector('.close-btn');
+
+    infoBtn.addEventListener('click', () => {
+      aboutModal.classList.add('active');
+      // Focus modal for accessibility
+      closeBtn.focus();
+    });
+
+    closeBtn.addEventListener('click', () => {
+      aboutModal.classList.remove('active');
+      infoBtn.focus();
+    });
+
+    // Close modal on click outside content
+    aboutModal.addEventListener('click', e => {
+      if (e.target === aboutModal) {
+        aboutModal.classList.remove('active');
+        infoBtn.focus();
+      }
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && aboutModal.classList.contains('active')) {
+        aboutModal.classList.remove('active');
+        infoBtn.focus();
+      }
+    });
+  </script>
+</body>
+</html>
